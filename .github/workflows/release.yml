@@ -150,7 +150,7 @@ jobs:
     - name: Assemble Artifact
       id: assemble_artifact
       run: |
-          cd lede
+          cd openwrt
           rm -rf artifact.zip
           release_tag="LEDE-Lean-firmware-$(date +%Y-%m-%d)"
           echo "##[set-output name=release_tag;]$release_tag"
