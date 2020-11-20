@@ -89,7 +89,7 @@ jobs:
       run: |
         cd openwrt
         rm .config
-        mv $GITHUB_WORKSPACE/.config ./
+        curl -fsSL https://raw.githubusercontent.com/szdosar/Actions-OpenWrt/main/.config > .config
 
     - name: SSH connection to Actions
       uses: P3TERX/ssh2actions@v1.0.0
