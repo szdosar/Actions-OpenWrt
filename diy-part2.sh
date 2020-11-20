@@ -12,3 +12,4 @@
 
 # Modify default IP
 sed -i 's/192.168.1.1/192.168.2.1/g' package/base-files/files/bin/config_generate
+sed -i 's/option filter_aaaa 1/option filter_aaaa 0/g' package/network/services/dnsmasq/files/dhcp.conf
