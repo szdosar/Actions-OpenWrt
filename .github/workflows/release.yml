@@ -84,11 +84,12 @@ jobs:
         cd openwrt
         $GITHUB_WORKSPACE/$DIY_P2_SH
 
-    - name: make defconfig
+    - name: make .config
       id: package
       run: |
         cd openwrt
-        make defconfig
+        rm .config
+        mv ../.config ./
 
     - name: SSH connection to Actions
       uses: P3TERX/ssh2actions@v1.0.0
