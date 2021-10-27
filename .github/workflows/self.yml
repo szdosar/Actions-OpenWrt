@@ -8,7 +8,7 @@
 # Description: Build OpenWrt using GitHub Actions
 #
 
-name: Build x86 OpenWrt self
+name: [ipk] Build x86 OpenWrt
 
 on:
   repository_dispatch:
@@ -37,8 +37,8 @@ env:
 
 jobs:
   build:
-    #runs-on: ubuntu-18.04
-    runs-on: self-hosted
+    runs-on: ubuntu-18.04
+    #runs-on: self-hosted
 
     steps:
     - name: Checkout
@@ -132,7 +132,8 @@ jobs:
       id: organize
       if: env.UPLOAD_FIRMWARE == 'true' && !cancelled()
       run: |
-        cd openwrt/bin/targets/*/*
+        cd openwrt/bin
+        #cd openwrt/bin/targets/*/*
         #rm -rf packages
         echo "FIRMWARE=$PWD" >> $GITHUB_ENV
         echo "::set-output name=status::success"
@@ -192,7 +193,7 @@ jobs:
       uses: dev-drprasad/delete-older-releases@v0.1.0
       if: env.UPLOAD_RELEASE == 'true' && !cancelled()
       with:
-        keep_latest: 3
+        keep_latest: 5
         delete_tags: true
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
