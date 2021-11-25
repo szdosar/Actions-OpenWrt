@@ -8,7 +8,7 @@
 # Description: Build OpenWrt using GitHub Actions
 #
 
-name: cr660x ipk Build x86 OpenWrt
+name: Build cr660x OpenWrt
 
 on:
   repository_dispatch:
