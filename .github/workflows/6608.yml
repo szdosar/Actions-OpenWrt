@@ -37,8 +37,8 @@ env:
 
 jobs:
   build:
-    runs-on: ubuntu-18.04
-    #runs-on: self-hosted
+    #runs-on: ubuntu-18.04
+    runs-on: self-hosted
 
     steps:
     - name: Checkout
