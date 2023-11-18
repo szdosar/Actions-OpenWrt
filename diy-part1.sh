@@ -18,3 +18,4 @@
 sed -i '$a src-git lienol https://github.com/Lienol/openwrt-package.git;main' feeds.conf.default
 sed -i '$a src-git other https://github.com/Lienol/openwrt-package.git;other' feeds.conf.default
 sed -i '$a src-git helloworld https://github.com/fw876/helloworld.git;main' feeds.conf.default
+sed -i '$a src-git passwall2 https://github.com/xiaorouji/openwrt-passwall2.git' feeds.conf.default
