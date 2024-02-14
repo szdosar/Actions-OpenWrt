@@ -90,16 +90,16 @@ jobs:
         cd openwrt
         $GITHUB_WORKSPACE/$DIY_P2_SH
 
+    - name: fix passwall time_pretransfer check
+      run: cd openwrt && rm -rf feeds/packages/net/curl && git clone https://github.com/sbwml/feeds_packages_net_curl feeds/packages/net/curl
+        # curl/8.5.0 - fix passwall `time_pretransfer` check
+
     - name: SSH connection to Actions
       uses: P3TERX/ssh2actions@v1.0.0
       if: (github.event.inputs.ssh == 'true' && github.event.inputs.ssh  != 'false') || contains(github.event.action, 'ssh')
       env:
         TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-
-        # curl/8.5.0 - fix passwall `time_pretransfer` check
-    - name: fix passwall time_pretransfer check
-      run: cd openwrt && rm -rf feeds/packages/net/curl && git clone https://github.com/sbwml/feeds_packages_net_curl feeds/packages/net/curl
 
     - name: Download package
       id: package
