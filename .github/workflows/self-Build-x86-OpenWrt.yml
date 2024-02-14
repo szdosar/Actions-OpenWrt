@@ -75,9 +75,6 @@ jobs:
         chmod +x $DIY_P1_SH
         cd openwrt
         $GITHUB_WORKSPACE/$DIY_P1_SH
-        # curl/8.5.0 - fix passwall `time_pretransfer` check
-        rm -rf feeds/packages/net/curl
-        git clone https://github.com/sbwml/feeds_packages_net_curl feeds/packages/net/curl
 
     - name: Update feeds
       run: cd openwrt && ./scripts/feeds update -a
@@ -92,6 +89,11 @@ jobs:
         chmod +x $DIY_P2_SH
         cd openwrt
         $GITHUB_WORKSPACE/$DIY_P2_SH
+
+    - name: fix passwall time_pretransfer check
+      run: cd openwrt && rm -rf feeds/packages/net/curl
+        # curl/8.5.0 - fix passwall `time_pretransfer` check
+        git clone https://github.com/sbwml/feeds_packages_net_curl feeds/packages/net/curl
 
     - name: SSH connection to Actions
       uses: P3TERX/ssh2actions@v1.0.0
