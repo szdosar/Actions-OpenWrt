@@ -90,7 +90,7 @@ jobs:
         cd openwrt
         $GITHUB_WORKSPACE/$DIY_P2_SH
 
-    - name: fix passwall time_pretransfer check
+    - name: fix curl 8.5.0
       run: cd openwrt && rm -rf feeds/packages/net/curl
         # curl/8.5.0 - fix passwall `time_pretransfer` check
         git clone https://github.com/sbwml/feeds_packages_net_curl feeds/packages/net/curl
