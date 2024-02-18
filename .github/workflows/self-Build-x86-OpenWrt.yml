@@ -14,6 +14,10 @@ on:
   repository_dispatch:
   workflow_dispatch:
     inputs:
+      curl:
+        description: 'fix passwall time_pretransfer check'
+        required: false
+        default: 'false'
       ssh:
         description: 'SSH connection to Actions'
         required: false
@@ -91,6 +95,7 @@ jobs:
         $GITHUB_WORKSPACE/$DIY_P2_SH
 
     - name: fix passwall time_pretransfer check
+      if: (github.event.inputs.curl == 'true' && github.event.inputs.curl  != 'false') || contains(github.event.action, 'curl')
       run: cd openwrt && rm -rf feeds/packages/net/curl && git clone https://github.com/sbwml/feeds_packages_net_curl feeds/packages/net/curl
         # curl/8.5.0 - fix passwall `time_pretransfer` check
 
