@@ -63,9 +63,8 @@ jobs:
       working-directory: /workdir
       run: |
         df -hT $PWD
-        rm -rf openwrt
-        git clone $REPO_URL -b $REPO_BRANCH openwrt
         cd /workdir
+        rm -rf openwrt
         wget https://sgto.eu.org/lede_backup.tar.gz
         mkdir -p tempdir
         pigz -d -c lede_backup.tar.gz | tar xf - -C tempdir
@@ -76,18 +75,11 @@ jobs:
         ./scripts/feeds update -a -f && ./scripts/feeds install -a -f && make defconfig
         ln -sf /workdir/openwrt $GITHUB_WORKSPACE/openwrt
 
-    - name: Remove some feeds
+    - name: Remove some packages
       run: cd openwrt && rm -rf feeds/packages/net/{xray-core,v2ray-core}
 
-    - name: Update feeds
-      run: cd openwrt && ./scripts/feeds update -a
-      
-    - name: Install feeds
-      run: cd openwrt && ./scripts/feeds install -a
-
     - name: Update golang
-      run: |
-        cd openwrt && bash <(wget --no-check-certificate -qO- 'https://raw.githubusercontent.com/szdosar/ish/master/update_golang.sh')
+      run: cd openwrt && bash <(wget --no-check-certificate -qO- 'https://raw.githubusercontent.com/szdosar/ish/master/update_golang.sh')
 
     - name: SSH connection to Actions
       uses: P3TERX/ssh2actions@v1.0.0
@@ -96,12 +88,9 @@ jobs:
         TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
 
-    - name: Download package
+    - name: Download packages
       id: package
-      run: |
-        cd openwrt
-        make defconfig
-        make download -j$(nproc)
+      run: cd openwrt && make download -j$(nproc)
 
     - name: Compile the firmware
       id: compile
