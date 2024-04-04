@@ -66,6 +66,7 @@ jobs:
         rm -rf openwrt
         git clone $REPO_URL -b $REPO_BRANCH openwrt
         cd /workdir/openwrt
+        ln -sf /workdir/openwrt $GITHUB_WORKSPACE/openwrt
         #####>2024.4.3
         rm -rf ~/backup/2021-11-14
         mkdir -p ~/backup/2021-11-14/firmware
@@ -80,7 +81,6 @@ jobs:
         cp -r ~/backup/2021-11-14/{mac80211,rtl8821cu} package/kernel/
         cp -r ~/backup/2021-11-14/firmware/b43legacy-firmware package/firmware/
         #########<2024.4.3
-        ln -sf /workdir/openwrt $GITHUB_WORKSPACE/openwrt
 
     - name: Load custom feeds
       run: |
@@ -116,8 +116,8 @@ jobs:
         cd openwrt
         make defconfig
         make download -j8
-        find dl -size -1024c -exec ls -l {} \;
-        find dl -size -1024c -exec rm -f {} \;
+        #find dl -size -1024c -exec ls -l {} \;
+        #find dl -size -1024c -exec rm -f {} \;
 
     - name: Compile the firmware
       id: compile
