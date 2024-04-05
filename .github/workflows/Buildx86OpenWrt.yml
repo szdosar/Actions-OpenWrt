@@ -37,8 +37,8 @@ env:
 
 jobs:
   build:
-    runs-on: ubuntu-20.04
-    #runs-on: ubuntu-latest
+    #runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
     #runs-on: self-hosted
 
     steps:
@@ -66,21 +66,8 @@ jobs:
         rm -rf openwrt
         git clone $REPO_URL -b $REPO_BRANCH openwrt
         cd /workdir/openwrt
-        ln -sf /workdir/openwrt $GITHUB_WORKSPACE/openwrt
-        #####>2024.4.3
-        rm -rf ~/backup/2021-11-14
-        mkdir -p ~/backup/2021-11-14/firmware
-        git reset --hard 77251e963f61f33504d24defef9dcfe1104d0a70
-        cp -r package/firmware/b43legacy-firmware ~/backup/2021-11-14/firmware/
-        cp -r package/kernel/{mac80211,rtl8821cu} ~/backup/2021-11-14/
-        #####<2024.4.3
         git reset --hard 9d124b993644b4f77749788936c44ca0c884f184
-        #########>2024.4.3
-        rm -rf feeds/packages/net/{xray-core,v2ray-core,v2ray-geodata,sing-box}
-        rm -rf package/kernel/{mac80211,rtw88-usb}
-        cp -r ~/backup/2021-11-14/{mac80211,rtl8821cu} package/kernel/
-        cp -r ~/backup/2021-11-14/firmware/b43legacy-firmware package/firmware/
-        #########<2024.4.3
+        ln -sf /workdir/openwrt $GITHUB_WORKSPACE/openwrt
 
     - name: Load custom feeds
       run: |
@@ -116,8 +103,8 @@ jobs:
         cd openwrt
         make defconfig
         make download -j8
-        #find dl -size -1024c -exec ls -l {} \;
-        #find dl -size -1024c -exec rm -f {} \;
+        find dl -size -1024c -exec ls -l {} \;
+        find dl -size -1024c -exec rm -f {} \;
 
     - name: Compile the firmware
       id: compile
