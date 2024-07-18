@@ -64,18 +64,7 @@ jobs:
         df -hT $PWD
         rm -rf openwrt
         ln -sf /workdir/openwrt $GITHUB_WORKSPACE/openwrt
-        rm -rf ~/backup/2021-11-14
-        mkdir -p ~/backup/2021-11-14/firmware
-        git clone https://github.com/coolsnowwolf/lede openwrt
-        cd openwrt
-        git reset --hard 77251e963f61f33504d24defef9dcfe1104d0a70
-        cp -r package/firmware/b43legacy-firmware ~/backup/2021-11-14/firmware/
-        cp -r package/kernel/{mac80211,rtl8821cu} ~/backup/2021-11-14/
         git reset --hard 9d124b993644b4f77749788936c44ca0c884f184
-        rm -rf feeds/packages/net/{xray-core,v2ray-core,v2ray-geodata,sing-box}
-        rm -rf package/kernel/{mac80211,rtw88-usb}
-        cp -r ~/backup/2021-11-14/{mac80211,rtl8821cu} package/kernel/
-        cp -r ~/backup/2021-11-14/firmware/b43legacy-firmware package/firmware/
 
     - name: Load custom feeds
       run: |
@@ -85,7 +74,13 @@ jobs:
         $GITHUB_WORKSPACE/$DIY_P1_SH
 
     - name: Update feeds
-      run: cd openwrt && ./scripts/feeds update -a
+      run: |
+        cd openwrt
+        ./scripts/feeds update -a && rm -rf feeds/luci/applications/luci-app-mosdns
+        rm -rf feeds/packages/net/{alist,adguardhome,mosdns,xray*,v2ray*,v2ray*,sing*,smartdns}
+        rm -rf feeds/packages/utils/v2dat
+        rm -rf feeds/packages/lang/golang
+        git clone https://github.com/kenzok8/golang feeds/packages/lang/golang
       
     - name: Install feeds
       run: cd openwrt && ./scripts/feeds install -a
