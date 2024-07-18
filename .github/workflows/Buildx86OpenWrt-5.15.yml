@@ -64,13 +64,13 @@ jobs:
         df -hT $PWD
         rm -rf openwrt
         ln -sf /workdir/openwrt $GITHUB_WORKSPACE/openwrt
-        git reset --hard 9d124b993644b4f77749788936c44ca0c884f184
 
     - name: Load custom feeds
       run: |
-        [ -e $FEEDS_CONF ] && mv $FEEDS_CONF openwrt/feeds.conf.default
+#       [ -e $FEEDS_CONF ] && mv $FEEDS_CONF openwrt/feeds.conf.default
         chmod +x $DIY_P1_SH
         cd openwrt
+        git reset --hard 9d124b993644b4f77749788936c44ca0c884f184
         $GITHUB_WORKSPACE/$DIY_P1_SH
 
     - name: Update feeds
