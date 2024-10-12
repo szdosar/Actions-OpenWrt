@@ -8,7 +8,7 @@
 # Description: Build OpenWrt using GitHub Actions
 #
 
-name: Build x86 OpenWrt 5.15
+name: Build immortalwrt cr6608 small
 
 on:
   repository_dispatch:
@@ -37,7 +37,7 @@ env:
 
 jobs:
   build:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-20.04
     #runs-on: ubuntu-latest
     #runs-on: self-hosted
 
@@ -72,20 +72,19 @@ jobs:
         [ -e $FEEDS_CONF ] && mv $FEEDS_CONF openwrt/feeds.conf.default
         chmod +x $DIY_P1_SH
         cd openwrt
-        git reset --hard 9d124b993644b4f77749788936c44ca0c884f184
         $GITHUB_WORKSPACE/$DIY_P1_SH
 
     - name: Update feeds
       run: |
-        cd openwrt
-        ./scripts/feeds update -a && rm -rf feeds/luci/applications/luci-app-mosdns
+        cd openwrt && ./scripts/feeds update -a
+        rm -rf feeds/luci/applications/luci-app-mosdns
         rm -rf feeds/packages/net/{alist,adguardhome,mosdns,xray*,v2ray*,v2ray*,sing*,smartdns}
         rm -rf feeds/packages/utils/v2dat
         rm -rf feeds/packages/lang/golang
         git clone https://github.com/kenzok8/golang feeds/packages/lang/golang
-      
+
     - name: Install feeds
-      run: cd openwrt && ./scripts/feeds install -a
+      run: cd openwrt && ./scripts/feeds install -a && make defconfig
 
     - name: Load custom configuration
       run: |
@@ -94,7 +93,6 @@ jobs:
         chmod +x $DIY_P2_SH
         cd openwrt
         $GITHUB_WORKSPACE/$DIY_P2_SH
-        make defconfig
 
     - name: SSH connection to Actions
       uses: P3TERX/ssh2actions@v1.0.0
