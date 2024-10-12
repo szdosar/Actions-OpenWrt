@@ -8,7 +8,7 @@
 # Description: Build OpenWrt using GitHub Actions
 #
 
-name: Build 6608 OpenWrt
+name: Build x86 OpenWrt 5.15
 
 on:
   repository_dispatch:
@@ -25,7 +25,7 @@ env:
   REPO_URL: https://github.com/coolsnowwolf/lede
   REPO_BRANCH: master
   FEEDS_CONF: feeds.conf.default
-  CONFIG_FILE: 6608.config
+  CONFIG_FILE: immortalwrt6608.config
   DIY_P1_SH: diy-part1_small.sh
   DIY_P2_SH: diy-part2.sh
   UPLOAD_BIN_DIR: false
@@ -37,8 +37,9 @@ env:
 
 jobs:
   build:
-    #runs-on: ubuntu-18.04
-    runs-on: self-hosted
+    runs-on: ubuntu-22.04
+    #runs-on: ubuntu-latest
+    #runs-on: self-hosted
 
     steps:
     - name: Checkout
@@ -61,8 +62,9 @@ jobs:
       working-directory: /workdir
       run: |
         df -hT $PWD
-        #rm -rf openwrt
+        rm -rf openwrt
         git clone $REPO_URL -b $REPO_BRANCH openwrt
+        cd /workdir/openwrt
         ln -sf /workdir/openwrt $GITHUB_WORKSPACE/openwrt
 
     - name: Load custom feeds
@@ -74,7 +76,13 @@ jobs:
         $GITHUB_WORKSPACE/$DIY_P1_SH
 
     - name: Update feeds
-      run: cd openwrt && ./scripts/feeds update -a
+      run: |
+        cd openwrt
+        ./scripts/feeds update -a && rm -rf feeds/luci/applications/luci-app-mosdns
+        rm -rf feeds/packages/net/{alist,adguardhome,mosdns,xray*,v2ray*,v2ray*,sing*,smartdns}
+        rm -rf feeds/packages/utils/v2dat
+        rm -rf feeds/packages/lang/golang
+        git clone https://github.com/kenzok8/golang feeds/packages/lang/golang
       
     - name: Install feeds
       run: cd openwrt && ./scripts/feeds install -a
@@ -86,10 +94,7 @@ jobs:
         chmod +x $DIY_P2_SH
         cd openwrt
         $GITHUB_WORKSPACE/$DIY_P2_SH
-        #OpenAppFilter
-        #cd package
-        #git clone https://github.com/destan19/OpenAppFilter.git
-        #cd -
+        make defconfig
 
     - name: SSH connection to Actions
       uses: P3TERX/ssh2actions@v1.0.0
@@ -102,7 +107,6 @@ jobs:
       id: package
       run: |
         cd openwrt
-        make defconfig
         make download -j8
         find dl -size -1024c -exec ls -l {} \;
         find dl -size -1024c -exec rm -f {} \;
@@ -193,7 +197,7 @@ jobs:
       uses: dev-drprasad/delete-older-releases@v0.1.0
       if: env.UPLOAD_RELEASE == 'true' && !cancelled()
       with:
-        keep_latest: 5
+        keep_latest: 3
         delete_tags: true
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
