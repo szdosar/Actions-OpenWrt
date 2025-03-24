@@ -63,7 +63,7 @@ jobs:
       run: |
         df -hT $PWD
         rm -rf openwrt
-        git clone $REPO_URL -b --single-branch --filter=blob:none $REPO_BRANCH openwrt
+        git clone $REPO_URL -b $REPO_BRANCH openwrt
         cd /workdir/openwrt
         ln -sf /workdir/openwrt $GITHUB_WORKSPACE/openwrt
 
