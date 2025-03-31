@@ -88,8 +88,8 @@ jobs:
     - name: Install feeds
       run: |
         cd openwrt
-        git pull https://github.com/kenzok8/small.git
-        git pull https://github.com/kenzok8/openwrt-packages.git
+        git pull https://github.com/kenzok8/small.git --ff-only
+        git pull https://github.com/kenzok8/openwrt-packages.git --ff-only
         ./scripts/feeds update -a
         ./scripts/feeds install -a
 
