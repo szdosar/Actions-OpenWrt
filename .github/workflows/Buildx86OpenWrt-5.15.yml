@@ -90,7 +90,8 @@ jobs:
         cd openwrt
         git pull https://github.com/kenzok8/small.git
         git pull https://github.com/kenzok8/openwrt-packages.git
-        ./scripts/feeds update -a -f && ./scripts/feeds install -a -f
+        ./scripts/feeds update -a
+        ./scripts/feeds install -a
 
     - name: Load custom configuration
       run: |
