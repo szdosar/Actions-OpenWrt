@@ -90,7 +90,11 @@ jobs:
         git clone https://github.com/sbwml/packages_lang_golang -b 24.x feeds/packages/lang/golang
 
     - name: Install feeds
-      run: cd openwrt && ./scripts/feeds install -a
+      run: |
+        cd openwrt
+        git pull https://github.com/kenzok8/small.git
+        git pull https://github.com/kenzok8/openwrt-packages.git
+        ./scripts/feeds update -a -f && ./scripts/feeds install -a -f
 
     - name: Load custom configuration
       run: |
