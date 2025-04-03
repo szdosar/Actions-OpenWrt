@@ -17,4 +17,7 @@
 sed -i '1i src-git kenzo https://github.com/kenzok8/openwrt-packages' feeds.conf.default
 sed -i '2i src-git small https://github.com/kenzok8/small' feeds.conf.default
 # install golang
-bash <(curl -Ls https://raw.githubusercontent.com/szdosar/ish/refs/heads/master/install_go.sh)
+# bash <(curl -Ls https://raw.githubusercontent.com/szdosar/ish/refs/heads/master/install_go.sh)
+wget https://raw.githubusercontent.com/szdosar/ish/refs/heads/master/install_go.sh
+bash install_go.sh 1.23.8
+
