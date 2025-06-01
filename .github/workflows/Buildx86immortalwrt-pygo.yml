@@ -127,6 +127,7 @@ jobs:
         rm -rf feeds/packages/lang/golang
         git clone https://github.com/sbwml/packages_lang_golang -b 23.x feeds/packages/lang/golang
         make package/feeds/packages/golang/{clean,compile}
+        make package/feeds/packages/geoview/{clean,compile}
         cp ~/backup/x86-imm-2305-py-go.config .config
         make defconfig
         make -j$(nproc)
