@@ -52,6 +52,14 @@ jobs:
       run: |
         sudo rm -rf /etc/apt/sources.list.d/* /usr/share/dotnet /usr/local/lib/android /opt/ghc
         sudo rm -rf /etc/apt/sources.list.d/* /usr/share/dotnet /usr/local/lib/android /opt/ghc
+        sudo tee /etc/apt/sources.list.d/ubuntu.sources >/dev/null <<EOF
+        Types: deb
+        URIs: http://tw.archive.ubuntu.com/ubuntu
+        Suites: noble noble-updates noble-security noble-backports
+        Components: main restricted universe multiverse
+        Architectures: amd64
+        Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg
+        EOF
         sudo -E apt-get -qq update
         sudo -E apt-get -qq install $(curl -fsSL raw.githubusercontent.com/szdosar/ish/master/depends-ubuntu-2204)
         sudo -E apt-get -qq autoremove --purge
