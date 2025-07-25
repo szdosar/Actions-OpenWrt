@@ -37,7 +37,7 @@ env:
 
 jobs:
   build:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-22.04
     #runs-on: ubuntu-latest
     #runs-on: self-hosted
 
@@ -74,17 +74,16 @@ jobs:
         cd openwrt
         $GITHUB_WORKSPACE/$DIY_P1_SH
 
-    - name: Update feeds
+    - name: Update & Install feeds
       run: |
         cd openwrt && ./scripts/feeds update -a
         rm -rf feeds/luci/applications/luci-app-mosdns
         rm -rf feeds/packages/net/{alist,adguardhome,mosdns,xray*,v2ray*,v2ray*,sing*,smartdns}
         rm -rf feeds/packages/utils/v2dat
+        ./scripts/feeds install -a 
         sed -i '/\/etc\/init\.d\/tailscale/d;/\/etc\/config\/tailscale/d;' feeds/packages/net/tailscale/Makefile
         git clone https://github.com/asvow/luci-app-tailscale package/luci-app-tailscale
-
-    - name: Install feeds
-      run: cd openwrt && ./scripts/feeds install -a && make defconfig
+        make defconfig
 
     - name: Load custom configuration
       run: |
@@ -114,7 +113,10 @@ jobs:
       run: |
         cd openwrt
         echo -e "$(nproc) thread compile"
-        make -j$(nproc) || make -j1 || make -j1 V=s
+        #make -j$(nproc) || make -j1 || make -j1 V=s
+        make -j$(nproc)
+        make package/feeds/packages/geoview/{clean,compile}
+        make -j$(nproc)
         echo "::set-output name=status::success"
         grep '^CONFIG_TARGET.*DEVICE.*=y' .config | sed -r 's/.*DEVICE_(.*)=y/\1/' > DEVICE_NAME
         [ -s DEVICE_NAME ] && echo "DEVICE_NAME=_$(cat DEVICE_NAME)" >> $GITHUB_ENV
