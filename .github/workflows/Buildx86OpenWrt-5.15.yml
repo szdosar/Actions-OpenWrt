@@ -75,10 +75,10 @@ jobs:
         git reset --hard 9d124b993644b4f77749788936c44ca0c884f184
         cp feeds.conf.default{,.bak} \
         && cat > feeds.conf.default <<'EOF'
-        src-git packages https://github.com/coolsnowwolf/packages^c7720ad
-        src-git luci https://github.com/coolsnowwolf/luci^0715d9a
-        src-git routing https://github.com/coolsnowwolf/routing^de13bb5
-        src-git telephony https://git.openwrt.org/feed/telephony.git^27c3664
+        src-git packages https://github.com/coolsnowwolf/packages^6b472d8
+        src-git luci https://github.com/coolsnowwolf/luci^d985fad
+        src-git routing https://github.com/coolsnowwolf/routing^d613875
+        src-git telephony https://git.openwrt.org/feed/telephony.git^0b90add
         EOF
         $GITHUB_WORKSPACE/$DIY_P1_SH
 
