@@ -75,8 +75,6 @@ jobs:
         git reset --hard 9d124b993644b4f77749788936c44ca0c884f184
         cp feeds.conf.default{,.bak} \
         && cat > feeds.conf.default <<'EOF'
-        src-git kenzo https://github.com/kenzok8/openwrt-packages
-        src-git small https://github.com/kenzok8/small
         src-git packages https://github.com/coolsnowwolf/packages^c7720ad
         src-git luci https://github.com/coolsnowwolf/luci^0715d9a
         src-git routing https://github.com/coolsnowwolf/routing^de13bb5
