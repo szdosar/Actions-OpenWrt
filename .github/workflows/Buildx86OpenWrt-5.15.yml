@@ -49,8 +49,7 @@ jobs:
       env:
         DEBIAN_FRONTEND: noninteractive
       run: |
-        sudo rm -rf /etc/apt/sources.list.d/* /usr/share/dotnet /usr/local/lib/android /opt/ghc
-        sudo rm -rf /etc/apt/sources.list.d/* /usr/share/dotnet /usr/local/lib/android /opt/ghc
+        #sudo rm -rf /etc/apt/sources.list.d/* /usr/share/dotnet /usr/local/lib/android /opt/ghc
         sudo -E apt-get -qq update
         sudo -E apt-get -qq install $(curl -fsSL raw.githubusercontent.com/szdosar/ish/master/depends-ubuntu-2204)
         sudo -E apt-get -qq autoremove --purge
@@ -74,6 +73,15 @@ jobs:
         chmod +x $DIY_P1_SH
         cd openwrt
         git reset --hard 9d124b993644b4f77749788936c44ca0c884f184
+        cp feeds.conf.default{,.bak} \
+        && cat > feeds.conf.default <<'EOF'
+        src-git kenzo https://github.com/kenzok8/openwrt-packages
+        src-git small https://github.com/kenzok8/small
+        src-git packages https://github.com/coolsnowwolf/packages^c7720ad
+        src-git luci https://github.com/coolsnowwolf/luci^0715d9a
+        src-git routing https://github.com/coolsnowwolf/routing^de13bb5
+        src-git telephony https://git.openwrt.org/feed/telephony.git^27c3664
+        EOF
         $GITHUB_WORKSPACE/$DIY_P1_SH
 
     - name: Update feeds
@@ -141,6 +149,7 @@ jobs:
       id: organize
       if: env.UPLOAD_FIRMWARE == 'true' && !cancelled()
       run: |
+        cp openwrt/.config openwrt/bin/targets/*/*/my.config
         cd openwrt/bin/targets/*/*
         rm -rf packages
         echo "FIRMWARE=$PWD" >> $GITHUB_ENV
