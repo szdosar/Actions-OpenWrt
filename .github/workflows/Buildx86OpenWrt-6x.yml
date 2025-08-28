@@ -92,8 +92,8 @@ jobs:
         rm -rf feeds/packages/utils/v2dat
         rm -rf feeds/packages/lang/golang
         git clone https://github.com/sbwml/packages_lang_golang -b 24.x feeds/packages/lang/golang
-        git pull https://github.com/kenzok8/small.git
-        git pull https://github.com/kenzok8/openwrt-packages.git
+        git pull https://github.com/kenzok8/small.git || true
+        git pull https://github.com/kenzok8/openwrt-packages.git || true
 
     - name: Install feeds
       run: |
