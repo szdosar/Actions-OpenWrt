@@ -75,6 +75,8 @@ jobs:
         #git reset --hard 9d124b993644b4f77749788936c44ca0c884f184
         cp feeds.conf.default{,.bak} \
         && cat > feeds.conf.default <<'EOF'
+        src-git kenzo https://github.com/kenzok8/openwrt-packages
+        src-git small https://github.com/kenzok8/small
         src-git packages https://github.com/coolsnowwolf/packages^6b472d8
         src-git-full luci https://github.com/coolsnowwolf/luci
         src-git routing https://github.com/coolsnowwolf/routing^d613875
@@ -90,6 +92,8 @@ jobs:
         rm -rf feeds/packages/utils/v2dat
         rm -rf feeds/packages/lang/golang
         git clone https://github.com/sbwml/packages_lang_golang -b 24.x feeds/packages/lang/golang
+        git pull https://github.com/kenzok8/small.git
+        git pull https://github.com/kenzok8/openwrt-packages.git
 
     - name: Install feeds
       run: |
@@ -127,7 +131,8 @@ jobs:
         cd openwrt
         echo -e "$(nproc) thread compile"
         bash <(curl -Ls https://raw.githubusercontent.com/szdosar/ish/refs/heads/master/fix_singbox_init.sh)
-        make -j$(nproc) || make -j1 || make -j1 V=s
+        #make -j$(nproc) || make -j1 || make -j1 V=s
+        make -j$(nproc) 
         echo "::set-output name=status::success"
         grep '^CONFIG_TARGET.*DEVICE.*=y' .config | sed -r 's/.*DEVICE_(.*)=y/\1/' > DEVICE_NAME
         [ -s DEVICE_NAME ] && echo "DEVICE_NAME=_$(cat DEVICE_NAME)" >> $GITHUB_ENV
