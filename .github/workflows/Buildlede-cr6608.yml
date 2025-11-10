@@ -27,7 +27,7 @@ env:
   FEEDS_CONF: feeds.conf.default
   CONFIG_FILE: lededcr6608.config
   DIY_P1_SH: diy-part1_small.sh
-  DIY_P2_SH: diy-part2.sh
+  DIY_P2_SH: diy-part2_lededcr6608.sh
   UPLOAD_BIN_DIR: false
   UPLOAD_FIRMWARE: true
   UPLOAD_COWTRANSFER: false
@@ -72,14 +72,7 @@ jobs:
         [ -e $FEEDS_CONF ] && mv $FEEDS_CONF openwrt/feeds.conf.default
         chmod +x $DIY_P1_SH
         cd openwrt
-        #git reset --hard 9d124b993644b4f77749788936c44ca0c884f184
-        cp feeds.conf.default{,.bak} \
-        && cat > feeds.conf.default <<'EOF'
-        src-git packages https://github.com/coolsnowwolf/packages^6b472d8
-        src-git-full luci https://github.com/coolsnowwolf/luci
-        src-git routing https://github.com/coolsnowwolf/routing^d613875
-        src-git telephony https://git.openwrt.org/feed/telephony.git^0b90add
-        EOF
+        git reset --hard 679d3b8e85a24bfdb879793a84bb0cca13e54cea
         $GITHUB_WORKSPACE/$DIY_P1_SH
 
     - name: Update feeds
