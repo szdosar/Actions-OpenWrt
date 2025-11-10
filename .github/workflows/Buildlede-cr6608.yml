@@ -84,6 +84,8 @@ jobs:
         rm -rf feeds/packages/lang/golang
         git clone https://github.com/sbwml/packages_lang_golang -b 25.x feeds/packages/lang/golang
         wget https://raw.githubusercontent.com/kenzok8/small/69f5314e26ebbc2627e88d25bd0e91453f386d58/sing-box/files/sing-box.init -O feeds/small/sing-box/files/sing-box.init
+        wget https://raw.githubusercontent.com/szdosar/ish/refs/heads/master/fix_singbox_init.sh
+        bash fix_singbox_init.sh
 
     - name: Install feeds
       run: |
