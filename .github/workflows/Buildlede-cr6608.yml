@@ -72,7 +72,9 @@ jobs:
         [ -e $FEEDS_CONF ] && mv $FEEDS_CONF openwrt/feeds.conf.default
         chmod +x $DIY_P1_SH
         cd openwrt
-        git checkout ecaf84009cda85a0471c53e48b5661b03a7fcac4
+        #git checkout ecaf84009cda85a0471c53e48b5661b03a7fcac4
+        git checkout 3f4efb6c4fb5aa319697dad97ce2c0b0d1bab6c2
+        #rockchip: fix some devices support
         $GITHUB_WORKSPACE/$DIY_P1_SH
 
     - name: Update feeds
